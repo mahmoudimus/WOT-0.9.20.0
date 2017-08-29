@@ -1,0 +1,12 @@
+<teamhealthbar_avatar.def>
+  <BaseMethods>
+    <teamHealthBar_updateTeamsHealthPercentage>
+      <Arg>ARRAY<of>UINT8</of></Arg>
+    </teamHealthBar_updateTeamsHealthPercentage>
+  </BaseMethods>
+  <ClientMethods>
+    <updateTeamsHealthPercentage>
+      <Arg>ARRAY<of>UINT8</of></Arg>
+    </updateTeamsHealthPercentage>
+  </ClientMethods>
+</teamhealthbar_avatar.def>

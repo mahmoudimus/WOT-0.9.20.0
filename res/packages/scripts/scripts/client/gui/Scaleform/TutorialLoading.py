@@ -1,0 +1,107 @@
+# 2017.08.29 21:45:50 Støední Evropa (letní èas)
+# Embedded file name: scripts/client/gui/Scaleform/TutorialLoading.py
+import GUI
+import BigWorld
+import constants
+from debug_utils import LOG_DEBUG
+from gui import g_guiResetters
+from gui.Scaleform.Flash import Flash
+from gui.Scaleform import SCALEFORM_SWF_PATH_V3
+from gui.shared.utils import graphics
+from helpers import getFullClientVersion, getClientOverride
+
+class LessonResultScreen(Flash):
+
+    def __init__(self, isVictory):
+        Flash.__init__(self, 'Victory.swf' if isVictory else 'tutorialDefeat.swf', path=SCALEFORM_SWF_PATH_V3)
+        self._displayRoot = self.getMember('root.main')
+        if self._displayRoot is not None:
+            self._displayRoot.resync()
+        return
+
+    def onLoad(self, dataSection):
+        self.active(True)
+
+    def onDelete(self):
+        if self._displayRoot is not None:
+            self._displayRoot.cleanup()
+            self._displayRoot = None
+        return
+
+
+class TutorialGarage(Flash):
+    GARAGE_SWF_NAMES = ['hangar_hangar01.swf',
+     'hangar_hangar02.swf',
+     'hangar_hangar03.swf',
+     'hangar_hangar04.swf',
+     'hangar_hangar05.swf',
+     'hangar_hangar06.swf']
+
+    def __init__(self, garageNum):
+        Flash.__init__(self, TutorialGarage.GARAGE_SWF_NAMES[garageNum], path=SCALEFORM_SWF_PATH_V3)
+
+    def onLoad(self, dataSection):
+        self.active(True)
+
+
+class TutorialLoading(Flash):
+
+    def __init__(self, finishCallback = None):
+        Flash.__init__(self, 'tutorialLoadingPicture.swf', path=SCALEFORM_SWF_PATH_V3)
+        self._displayRoot = self.getMember('root.main')
+        self.__finishCallback = finishCallback
+        if self._displayRoot is not None:
+            self._displayRoot.resync()
+            g_guiResetters.add(self.onUpdateStage)
+            self.onUpdateStage()
+        return
+
+    def onUpdateStage(self):
+        width, height = GUI.screenResolution()
+        scaleLength = len(graphics.getInterfaceScalesList([width, height]))
+        self._displayRoot.updateStage(width, height, scaleLength - 1)
+
+    def onLoad(self, dataSection):
+        self.active(True)
+        if self.__finishCallback is not None:
+            self.__finishCallback()
+        return
+
+    def onDelete(self):
+        if self._displayRoot is not None:
+            self._displayRoot.cleanup()
+            self._displayRoot = None
+        return
+
+
+class FlashOverlay(Flash):
+
+    def __init__(self, swfFile, finishCallback = None):
+        Flash.__init__(self, swfFile, path=SCALEFORM_SWF_PATH_V3)
+        self._displayRoot = self.getMember('root.main')
+        self.__finishCallback = finishCallback
+        if self._displayRoot is not None:
+            self._displayRoot.resync()
+            g_guiResetters.add(self.onUpdateStage)
+            self.onUpdateStage()
+        return
+
+    def onUpdateStage(self):
+        width, height = GUI.screenResolution()
+        scaleLength = len(graphics.getInterfaceScalesList([width, height]))
+        self._displayRoot.updateStage(width, height, scaleLength - 1)
+
+    def onLoad(self, dataSection):
+        self.active(True)
+        if self.__finishCallback is not None:
+            self.__finishCallback()
+        return
+
+    def onDelete(self):
+        if self._displayRoot is not None:
+            self._displayRoot.cleanup()
+            self._displayRoot = None
+        return
+# okay decompyling c:\Users\PC\wotmods\files\originals\res\packages\scripts\scripts\client\gui\Scaleform\TutorialLoading.pyc 
+# decompiled 1 files: 1 okay, 0 failed, 0 verify failed
+# 2017.08.29 21:45:50 Støední Evropa (letní èas)
